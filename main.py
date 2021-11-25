@@ -1,3 +1,4 @@
+import string
 from urllib.parse import urlencode
 import requests
 from pyquery import PyQuery as pq
@@ -19,7 +20,7 @@ client = MongoClient(host='127.0.0.1', port=27017)
 db = client['weibo']
 # 选择好数据库后我们需要指定要操作的集合，与数据库的选择类似
 collection = db['weibo']
-max_page = 1
+max_page = 50
 
 
 def get_page(page):
@@ -43,25 +44,32 @@ def get_page(page):
     except requests.ConnectionError as e:
         print('Error', e.args)
 
-
+# string str = "abc";
+#         boolean
+#         status = str.contains("a");
 # 定义一个解析方法，用来从结果中提取想要的信息
 def parse_page(json, page: int):
     if json:
         # 可以先遍历cards
         items = json.get('data').get('cards')
+
         for index, item in enumerate(items):
             if page == 1 and index == 1:
                 continue
             else:
                 # 然后获取mblog中的各个信息，赋值为一个新的字典返回即可
                 item = item.get('mblog', {})
-                weibo = {}
-                weibo['id'] = item.get('id')  # 微博的ID
-                weibo['text'] = pq(item.get('text')).text()  # 正文
-                weibo['attitudes'] = item.get('attitudes_count')  # 点赞数
-                weibo['comments'] = item.get('comments_count')  # 评论数
-                weibo['reposts'] = item.get('reposts_count')  # 转发数
-                yield weibo
+                if '冬奥会' in pq(item.get('text')).text():
+
+                    weibo = {}
+                    weibo['id'] = item.get('id')  # 微博的ID
+
+                    weibo['text'] = pq(item.get('text')).text()  # 正文
+
+                    weibo['attitudes'] = item.get('attitudes_count')  # 点赞数
+                    weibo['comments'] = item.get('comments_count')  # 评论数
+                    weibo['reposts'] = item.get('reposts_count')  # 转发数
+                    yield weibo
 
 
 def save_to_mongo(result):
