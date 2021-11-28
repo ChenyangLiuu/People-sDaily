@@ -8,7 +8,7 @@
 
 ![mongodb](https://github.com/ChenyangLiuu/People-sDaily/blob/main/screenshots/mongodb.png)
 
-###### 根据关键字检索：
+###### 根据关键字（冬奥会）检索：
 
 ![search](https://github.com/ChenyangLiuu/People-sDaily/blob/main/screenshots/search.png)
 
