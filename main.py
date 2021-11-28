@@ -33,7 +33,7 @@ def get_page(page):
     }
     # 调用urlopen（）方法将参数转化为URL的GET请求参数，base_url与参数拼合形成一个新的URL
     url = base_url + urlencode(params)
-    print(url)
+
     try:
         # requests请求这个链接，加入headers参数
         response = requests.get(url, headers=headers)
